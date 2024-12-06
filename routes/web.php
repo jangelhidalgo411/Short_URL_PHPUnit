@@ -21,11 +21,9 @@ Route::get('/', function () {
 /*
     Controller/API
 */
-//Route::get('/api/v1/short-urls',[ShortenerController::class, 'index']);
-
-Route::get('/api/v1/short-urls', [ShortenerController::class, 'index']);
-
-//Route::view('/api/v1/short-urls', ShortenerController::class);
+Route::post('/api/v1/register', [ShortenerController::class, 'register']);
+Route::post('/api/v1/Auth', [ShortenerController::class, 'Auth']);
+Route::post('/api/v1/short-urls', [ShortenerController::class, 'index']);
 
 
 
