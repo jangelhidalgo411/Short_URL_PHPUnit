@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\api\ShortenerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+/*
+    Controller/API
+*/
+//Route::get('/api/v1/short-urls',[ShortenerController::class, 'index']);
+
+Route::get('/api/v1/short-urls', [ShortenerController::class, 'index']);
+
+//Route::view('/api/v1/short-urls', ShortenerController::class);
+
+
+
+ 
