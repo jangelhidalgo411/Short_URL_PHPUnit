@@ -18,12 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-/*
-    Controller/API
-*/
-Route::post('/api/v1/register', [ShortenerController::class, 'register']);
-Route::post('/api/v1/Auth', [ShortenerController::class, 'Auth']);
-Route::post('/api/v1/short-urls', [ShortenerController::class, 'index']);
+Route::get('/Testing', function () {
+    return view('testing');
+});
+
 
 
 

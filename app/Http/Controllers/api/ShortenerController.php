@@ -35,8 +35,8 @@ class ShortenerController extends Controller {
 
     public function Auth(Request $r) {
         $r->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'Email' => 'required|email',
+            'Pass' => 'required',
         ]);
 
         $user = User::where('email', $r->email)->first();
@@ -52,7 +52,7 @@ class ShortenerController extends Controller {
         return response()->json(['token' => $token], 200);        
 	}
 
-    public function user(Request $r) {
+    public function Shortener(Request $r) {
         return response()->json($request->user());
     }
 

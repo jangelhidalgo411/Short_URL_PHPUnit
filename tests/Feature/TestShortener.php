@@ -14,7 +14,7 @@ class TestShortener extends TestCase
      *
      * @return void
      */
-    public function register() {
+    public function test_register() {
         $response = $this->postJson('/api/v1/register', [
             'Name' => 'John Doe',
             'Email' => 'JohnDoe@testing.com',
@@ -30,25 +30,25 @@ class TestShortener extends TestCase
         ]);
 
         $this->assertDatabaseHas('users', [
-            'email' => 'JohnDoe@testing.com',
+            'Email' => 'JohnDoe@testing.com',
         ]);
     }
 
-    public function user_auth_and_get_token() {
+    public function test_user_auth_and_get_token() {
         $user = User::factory()->create([
-            'email' => 'JohnDoe@testing.com',
-            'password' => bcrypt('Pass-1234'),
+            'Email' => 'JohnDoe@testing.com',
+            'Pass' => bcrypt('Pass-1234'),
         ]);
 
         $response = $this->postJson('/api/v1/Auth', [
-            'email' => 'JohnDoe@testing.com',
-            'password' => 'Pass-1234',
+            'Email' => 'JohnDoe@testing.com',
+            'Pass' => 'Pass-1234',
         ]);
 
         $response->assertStatus(200)->assertJsonStructure(['token']);
     }
 
-    public function auth_user_get_short_url() {
+    public function test_auth_user_get_short_url() {
         $user = User::factory()->create();
         $token = $user->createToken('bear-token')->plainTextToken;
 

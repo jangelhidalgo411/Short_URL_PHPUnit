@@ -19,4 +19,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/api/v1/short-urls', [ShortenerController::class, 'index']);
+Route::get('/api/apitest', function () {
+    return view('welcome');
+});
+Route::post('/api/v1/register', [ShortenerController::class, 'register']);
+Route::post('/api/v1/Auth', [ShortenerController::class, 'Auth']);
+Route::post('/api/v1/short-urls', [ShortenerController::class, 'Shortener']);
