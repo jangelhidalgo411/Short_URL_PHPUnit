@@ -57,7 +57,9 @@ class ShortenerController extends Controller {
             'url' => 'required|string|max:255'
         ]);
 
-        if (null == $r->bearerToken()) {
+        $BearAuth = $r->header('Authorization');
+
+        if (!$BearAuth || !$this->OpenCloseValidation($BearAuth)) {
             return response()->json(['message' => 'No autorizado'], 401);
         }
 
@@ -71,5 +73,37 @@ class ShortenerController extends Controller {
         $r->user()->tokens()->delete();
 
         return response()->json(['message' => 'Session Cerrada'], 200);
+    }
+
+    public function OpenCloseValidation(string $In): bool {
+        // Mapa de los cierres válidos
+        $pairs = [
+            ')' => '(',
+            '}' => '{',
+            ']' => '[',
+        ];
+
+        // array vacio para el balance de los caracteres de apertura
+        $Stack = [];
+
+        // Recorremos cada carácter de la cadena
+        foreach (str_split($In) as $Char) {
+            //Insertamos los caracteres de apertura en un array
+            if (in_array($Char, ['(', '{', '['])) {
+                $Stack[] = $Char;
+            }
+            //Validamos los de cierre
+            elseif (isset($pairs[$Char])) {
+                // devolvemos falso si no coincide o esta vacio
+                //     empty($stack) por si el simbolo de cerrar esta antes que cualquiera de apertura
+                //     array_pop($Stack) !== $pairs[$Char el simbolo de cierra tiene que conincidir con el respectivo
+                if (empty($stack) || array_pop($Stack) !== $pairs[$Char]) {
+                    return false;
+                }
+            }
+        }
+
+        // La pila debe estar vacía si todos los caracteres están balanceados
+        return empty($stack);
     }
 }

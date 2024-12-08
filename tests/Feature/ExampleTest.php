@@ -42,7 +42,7 @@ class ExampleTest extends TestCase
     public function test_user_auth() {
         $response = $this->postJson('/api/v1/Auth', [
             'Email' => 'JohnDoe5@testing.com',
-            'Pass' => bcrypt('Pass-1234'),
+            'Pass' => 'Pass-1234',
         ]);
     
         $response->assertStatus(200)->assertJsonStructure(['token']);
@@ -51,53 +51,23 @@ class ExampleTest extends TestCase
     public function test_auth_user_get_short_url() {
         $response = $this->postJson('/api/v1/Auth', [
             'Email' => 'JohnDoe5@testing.com',
-            'Pass' => bcrypt('Pass-1234'),
+            'Pass' => 'Pass-1234',
         ]);
 
         $user = User::where('email', 'JohnDoe5@testing.com')->first();
 
         $token = $user->createToken('bear-token')->plainTextToken;
 
-        $response = $this->postJson('/api/v1/short-urls', [
-            'Authorization' => 'Bearer ' . $token,
-            'url' => 'http://www.example.com'
-        ]);
+        $response = $this->postJson('/api/v1/short-urls',
+            [
+                'url' => 'http://www.example.com'
+            ],
+            [
+                'Authorization' => 'Bearer ' . $token,
+            ]
+        );
 
         $response->assertStatus(200)
         ->assertJsonStructure(['url']);
     }
-
-    public function OpenCloseValidation(string $In): bool {
-        // Mapa de los cierres válidos
-        $pairs = [
-            ')' => '(',
-            '}' => '{',
-            ']' => '[',
-        ];
-
-        // array vacio para el balance de los caracteres de apertura
-        $Stack = [];
-
-        // Recorremos cada carácter de la cadena
-        foreach (str_split($In) as $Char) {
-            //Insertamos los caracteres de apertura en un array
-            if (in_array($char, ['(', '{', '['])) {
-                $Stack[] = $Char;
-            }
-            //Validamos los de cierre
-            elseif (isset($pairs[$char])) {
-                // devolvemos falso si no coincide o esta vacio
-                //     empty($stack) por si el simbolo de cerrar esta antes que cualquiera de apertura
-                //     array_pop($Stack) !== $pairs[$Char el simbolo de cierra tiene que conincidir con el respectivo
-                if (empty($stack) || array_pop($Stack) !== $pairs[$Char]) {
-                    return false;
-                }
-            }
-        }
-
-        // La pila debe estar vacía si todos los caracteres están balanceados
-        return empty($stack);
-    }
-
-
 }
