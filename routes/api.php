@@ -15,13 +15,13 @@ use App\Http\Controllers\api\ShortenerController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->get('/user', function (Request $r) {
+    return "api working";
 });
 
-Route::get('/api/apitest', function () {
+Route::get('/apitest', function () {
     return view('welcome');
 });
-Route::post('/api/v1/register', [ShortenerController::class, 'register']);
-Route::post('/api/v1/Auth', [ShortenerController::class, 'Auth']);
-Route::post('/api/v1/short-urls', [ShortenerController::class, 'Shortener']);
+Route::post('/v1/register', [ShortenerController::class, 'register']);
+Route::post('/v1/Auth', [ShortenerController::class, 'Auth']);
+Route::post('/v1/short-urls', [ShortenerController::class, 'Shortener'])->middleware('auth:sanctum');
