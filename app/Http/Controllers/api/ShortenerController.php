@@ -5,29 +5,29 @@ namespace App\Http\Controllers\api;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use GuzzleHttp\Client;
+use Illuminate\Validation\ValidationException;
 
 class ShortenerController extends Controller {
 	public function index(Request $r) {
 		return view('welcome');
 	}
 
-    public function register(Request $request) {
-        $request->validate([
+    public function register(Request $r) {
+        $r->validate([
             'Name' => 'required|string|max:255',
             'Email' => 'required|string|email|max:255|unique:users',
             'Pass' => [
                 'required',
-                'min:8',
-                'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
-                'confirmed'
-            ],
-            'Pass_Confirm' => 'required|same:Pass' 
+                'min:8'
+            ]
         ]);
 
         $user = User::create([
-            'name' => $r->name,
-            'email' => $r->email,
-            'password' => Hash::make($r->password),
+            'name' => $r->Name,
+            'email' => $r->Email,
+            'password' => Hash::make($r->Pass),
         ]);
 
         return response()->json(['user' => $user], 201);
@@ -39,9 +39,9 @@ class ShortenerController extends Controller {
             'Pass' => 'required',
         ]);
 
-        $user = User::where('email', $r->email)->first();
+        $user = User::where('email', $r->Email)->first();
 
-        if (!$user || !Hash::check($r->password, $user->password)) {
+        if (!$user || !Hash::check($r->Pass, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['Credentiales incorrectas.'],
             ]);
@@ -53,7 +53,18 @@ class ShortenerController extends Controller {
 	}
 
     public function Shortener(Request $r) {
-        return response()->json($request->user());
+        $r->validate([
+            'url' => 'required|string|max:255'
+        ]);
+
+        if (null == $r->bearerToken()) {
+            return response()->json(['message' => 'No autorizado'], 401);
+        }
+
+        $Client = new Client(['verify' => false]);
+        $res = $Client->request('GET', 'https://tinyurl.com/api-create.php?url='.$r->url);
+
+        return response()->json(['url' => (string)$res->getBody()], 200);
     }
 
     public function logout(Request $r) {

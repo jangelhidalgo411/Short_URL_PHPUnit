@@ -43,15 +43,11 @@
                                         </div>
                                         <div class="form-group">
                                             <label for="regEmail">Email</label>
-                                            <input type="email" class="form-control" id="regEmail" value="Jose@test.test">
+                                            <input type="email" class="form-control" id="regEmail" value="JohnDoe5@testing.com">
                                         </div>
                                         <div class="form-group">
                                             <label for="regPass">Password</label>
-                                            <input type="password" class="form-control" id="regPass" value="12345">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="regPass_Confirm">Repeat Password</label>
-                                            <input type="password" class="form-control" id="regPass_Confirm" value="12345">
+                                            <input type="password" class="form-control" id="regPass" value="Pass-1234">
                                         </div>
                                         <button type="button"  id="regSubmit">Submit</button>
                                     </form>
@@ -68,11 +64,11 @@
                                     <form id="Auth">
                                         <div class="form-group">
                                             <label for="AuthEmail">Email</label>
-                                            <input type="email" class="form-control" id="AuthEmail">
+                                            <input type="email" class="form-control" id="AuthEmail" value="JohnDoe5@testing.com">
                                         </div>
                                         <div class="form-group">
                                             <label for="AuthPass">Password</label>
-                                            <input type="password" class="form-control" id="AuthPass">
+                                            <input type="password" class="form-control" id="AuthPass" value="Pass-1234">
                                         </div>
                                         <button type="button" onclick="auth();">Submit</button>
                                     </form>
@@ -88,11 +84,7 @@
                                 <div class="mt-2 text-gray-600 dark:text-gray-400 text-sm">
                                     <form id="short">
                                         <div class="form-group">
-                                            <label for="Authorization">Authorization</label>
-                                            <input type="text" class="form-control" id="Authorization">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="url">Password</label>
+                                            <label for="url">url</label>
                                             <input type="text" class="form-control" id="url" placeholder="url">
                                         </div>
                                         <button type="button" onclick="short();">Submit</button>
@@ -107,6 +99,8 @@
         </div>
         <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
         <script>
+            var token
+
             $('#regSubmit').on('click',function(){
                 $.ajax({
                     type:"POST",
@@ -123,35 +117,36 @@
                 });
             });
 
+            
             function auth() {
                 $.ajax({
                     type:"POST",
                     url:"/api/v1/Auth",
                     data:{
-                        email: $('#AuthEmail'),
-                        password: $('#AuthPass')
+                        Email: $('#AuthEmail').val(),
+                        Pass: $('#AuthPass').val()
                     },
                     success:function(res){
-                        console.log(res)
+                        console.log(res.token)
+                        token = res.token
                     }
                 });
             }
 
             function short() {
-                console.log('onclick auth')
-                /*$.ajax({
+                $.ajax({
                     type:"POST",
-                    url:"/api/v1/register",
+                    url:"/api/v1/short-urls",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
                     data:{
-                        Name: $('#regName'),
-                        Email: $('#regEmail'),
-                        Pass: $('#regPass'),
-                        Pass_Confirm: $('#regPass_Confirm')
+                        url: $('#url').val()
                     },
                     success:function(res){
                         console.log(res)
                     }
-                })*/
+                });
             }
 
             
