@@ -1,64 +1,107 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## Esto es un titulo
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Esto es un texto
 
-## About Laravel
+[Esto es un hiperlink](aqui va el URL).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Esto es negrilla**
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Esto es un un LI
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## La prueba consiste en la creación de una API en Laravel
 
-## Learning Laravel
+### Requisitos:
+- Framework: Debes usar Laravel para desarrollar la API.
+- TDD (Test-Driven Development): La solución debe seguir la metodología TDD. Es decir, debes escribir los tests primero y luego desarrollar el código para cumplir con esos tests.
+- Commits Atomizados: Debes dividir el trabajo en commits separados, siguiendo una estructura lógica (por ejemplo: Init, Paquetes, Funcionalidades, etc.).
+- Buenas Prácticas: Se valorará el uso de buenas prácticas, patrones y metodologías que aseguren que el código sea sostenible a largo plazo.
+- Tests: La entrega debe contener tests que verifiquen el funcionamiento correcto de la API.
+Defender la Solución: En caso de ser necesario, deberás presentar tu solución y defender todas las decisiones tomadas. No habrá una única solución correcta, pero se evaluará cómo aplicas buenas prácticas y justificas las decisiones.
+- Restricción: No se debe hacer uso de herramientas como ChatGPT o IA para ayudar en la solución.
+Tiempo: Tienes un plazo máximo de 5 días para entregar la prueba.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Definición de la API:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+La API deberá implementar el siguiente endpoint:
 
-## Laravel Sponsors
+#### POST /api/v1/short-urls
+Cuerpo de la Solicitud: Debe recibir un objeto JSON con los siguientes parámetros:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+> {
+>   "url": "string"  // obligatorio
+> }
+#### Respuesta:
 
-### Premium Partners
+La API debe devolver un objeto JSON con la siguiente estructura:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+> {
+>   "url": "<https://example.com/12345>"
+> }
 
-## Contributing
+El valor de "url" debe ser un enlace acortado que redirija a la URL original recibida en el cuerpo de la solicitud.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#### Acortador de URL:
 
-## Code of Conduct
+Utiliza una API pública para acortar la URL. Se recomienda usar el servicio TinyURL con su API
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+> GET https://tinyurl.com/api-create.php?url=http://www.example.com
 
-## Security Vulnerabilities
+### Autorización:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+La autorización será del tipo Bearer Token.
 
-## License
+Ejemplo de encabezado de autorización:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+> Authorization: Bearer my-token
+
+El token es válido si sigue el formato adecuado, por ejemplo:
+
+> Authorization: Bearer []{}()
+
+#### Validación de Paréntesis:
+
+Deberás crear una función que valide si una cadena que contiene solo los caracteres "{", "}", "[", "]", "(", ")" es válida, según las siguientes reglas:
+
+##### Reglas:
+
+Los paréntesis, llaves y corchetes deben cerrarse con el mismo tipo con el que se abrieron.
+
+Los paréntesis, llaves y corchetes deben cerrarse en el orden correcto.
+
+Ejemplos de cadenas válidas:
+> {} → válido
+> {), [{]} → inválido
+> ({[]}) → válido
+
+## Historial de comentarios
+
+1. ** first commit. ENV Setup. **
+    - Cree el proyecto y configure el .ENV file
+2. ** Require PHPUnit. Create Test. **
+    - Actualice el PHPunit a la ultima version
+    - Cree el archivo para probar las rutas
+3. ** Created controller. fix class doesnt exit issue. **
+    - Cree el controlador.
+    - indique el uso del contralador para que reconociera las rutas
+
+4. ** Created and tested 3 routes. **
+    - descomente la linea del api del kernel para que trabajaran con sanctum
+    - Agregue el modelo User en los archivos donde los usaria
+    - Defini las pruebas a realizar
+    - Corri las pruebas unitarias sin errores
+5. ** move api routes to api.php **
+    - Corregi los nombre de los campos requeridos en las peticiones
+    - Cree un archivo de pruebas manual
+    - Movi las rutas del web.php al api.php
+    - Le agregue el ** test_ ** a las pruebas para que las tomara en cuenta
+    - Movi los test definidos al archivo de ejemplo para que los ejecutara  
+6. ** finish tests. added last funtion. clean code. **
+    - Elimine la confirmacion de contraseña para el registro y el formato de contraseña ya que me estaban generando error
+    - Cree la funcion para validar los simbolos de apetura y cierre
+7. ** fixed issue getting auth url **
+    - Movi la funcion al controlador porque me di cuenta que lo habia colocado en el archivo que no era
+    - corregi la ruta con verificacion para obtener el short url 
+8. ** fixed api route in cache **
+    - Limpie la cache de routas ya que no estaban tomando correctamente las rutas de api.php 
+    - actualize el guzzle y el sanctum
+    - corregi las rutas api eliminandoles el api adicional que tenian
